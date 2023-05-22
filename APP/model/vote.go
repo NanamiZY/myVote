@@ -6,9 +6,17 @@ import (
 
 func GetVote(id int64) *Vote {
 	ret := &Vote{}
-	if err := GlobalConn.Preload("VoteOpt").Table("vote_title").Where("id = ?", id).First(ret).Error; err != nil {
-		fmt.Printf("err:%s\n", err.Error())
+	sql := "select * from `vote_title` where id=?"
+	GlobalConn.Raw(sql, id).Scan(ret)
+	opt := make([]*VoteOpt, 0)
+	sql = "select * from `vote_opt` where vote_id=?"
+	GlobalConn.Raw(sql, id).Scan(&opt)
+	for _, voteopt := range opt {
+		ret.VoteOpt = append(ret.VoteOpt, voteopt)
 	}
+	//if err := GlobalConn.Preload("VoteOpt").Table("vote_title").Where("id = ?", id).First(ret).Error; err != nil {
+	//	fmt.Printf("err:%s\n", err.Error())
+	//}
 	return ret
 }
 func GetVotes() []*Vote {
