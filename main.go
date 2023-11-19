@@ -1,6 +1,9 @@
 package main
 
-import "myVote/APP"
+import (
+	"fmt"
+	"myVote/APP"
+)
 
 // 添加注释以描述 server 信息
 // @title           投票项目
@@ -11,4 +14,5 @@ import "myVote/APP"
 
 func main() {
 	APP.Start()
+	fmt.Println(123)
 }
